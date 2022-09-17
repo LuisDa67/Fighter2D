@@ -38,7 +38,7 @@ def plotSignal(arrayAmplitude,period,name,startTime=0):
         xAxle.append(amplitude)
         yAxle.append(time)
     plt.plot(yAxle,xAxle)
-    plt.plot([0,0],[10,-10])
+    # plt.plot([0,0],[10,-10])
     plt.grid()
     plt.title(name)
     plt.show()
@@ -108,14 +108,21 @@ def generateMLT3(binarySequence):
 def generateBinarySequence(string):
     binarySequence = ''
     for char in string:
-        binarySequence+= str(bin(ord(char)))[2:]
+        auxStr = str(bin(ord(char))[2:])
+        while (len(auxStr)<8):
+            auxStr = "0"+auxStr
+        binarySequence+= auxStr
     return binarySequence
 
 def generateHexadecimalSequence(string):
     hexSequence = ''
     for char in string:
-        hexSequence+= str(hex(ord(char)))[2:]
-    return hexSequence
+        auxStr= str(hex(ord(char)))[2:]
+        while (len(auxStr) <2):
+            auxStr = "0" +auxStr
+        hexSequence+= auxStr   
+        return hexSequence
+
 
 string = str(input("enter your ascii string: "))
 binarySequence = generateBinarySequence(string)
