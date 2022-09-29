@@ -6,14 +6,14 @@ import json
 f = open('8B6T.json')
 dic8B6T = json.load(f)
 
-positive2BQ1 = {
+positive2B1Q = {
   "00": 1,
   "01": 3,
   "10": -1,
   "11": -3
 }
 
-negative2BQ1 = {
+negative2B1Q = {
   "00": -1,
   "01": -3,
   "10": 1,
@@ -50,12 +50,12 @@ def generate2B1Q(binarySequence):
     loops = int(len(binarySequence)/2)
     for i in range(loops):
         if(arrayAmplitude[-1]>0):
-            # print(positive2BQ1[binarySequence[0:2]] , binarySequence[0:2])
-            arrayAmplitude.append(positive2BQ1[binarySequence[0:2]])
+            # print(positive2B1Q[binarySequence[0:2]] , binarySequence[0:2])
+            arrayAmplitude.append(positive2B1Q[binarySequence[0:2]])
             
         else:
-            # print(negative2BQ1[binarySequence[0:2]] , binarySequence[0:2])
-            arrayAmplitude.append(negative2BQ1[binarySequence[0:2]])
+            # print(negative2B1Q[binarySequence[0:2]] , binarySequence[0:2])
+            arrayAmplitude.append(negative2B1Q[binarySequence[0:2]])
         binarySequence = binarySequence[2:]
     return (arrayAmplitude)
 
@@ -64,11 +64,11 @@ def generate8B6T(hexSequence):
     lastSum=0
     loops = int(len(hexSequence)/2)
     for i in range(loops):
-        if(sum(dic8B6T[hexSequence[0:2]])==1 and lastSum==1):
+        if(sum(dic8B6T[hexSequence[0:2]])==lastSum and lastSum!=0):
             arrayAmplitude += [item * -1 for item in dic8B6T[hexSequence[0:2]]]
         else :
             arrayAmplitude += dic8B6T[hexSequence[0:2]]
-        lastSum = sum(dic8B6T[hexSequence[0:2]])
+        lastSum = sum(arrayAmplitude[i*6:])
         hexSequence = hexSequence[2:]
     return (arrayAmplitude)
 
@@ -121,12 +121,12 @@ def generateHexadecimalSequence(string):
         while (len(auxStr) <2):
             auxStr = "0" +auxStr
         hexSequence+= auxStr   
-        return hexSequence
+    return hexSequence
 
 
 string = str(input("enter your ascii string: "))
 binarySequence = generateBinarySequence(string)
-hexSequence = generateHexadecimalSequence(string)
+hexSequence = generateHexadecimalSequence(string).upper()
 
 plotSignal(generate2B1Q(binarySequence),1,"2B1Q",-1)
 plotSignal(generate8B6T(hexSequence),1,"8B6T")
